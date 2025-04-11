@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing - JWT Exposer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Check task status periodically
+        function checkTaskStatus() {
+            fetch('/check_task/{{ task_id }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'complete') {
+                        {% if task_type == 'scan' %}
+                        window.location.href = "/scan_results/{{ task_id }}";
+                        {% else %}
+                        window.location.href = "/results/{{ task_id }}";
+                        {% endif %}
+                    } else {
+                        setTimeout(checkTaskStatus, 1000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking task status:', error);
+                    setTimeout(checkTaskStatus, 3000); // Retry after longer delay on error
+                });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            checkTaskStatus();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Processing Your Request</h1>
+        
+        <div class="loading-container text-center">
+            {% if task_type == 'scan' %}
+                <p class="lead">Scanning domain for JWT tokens...</p>
+            {% else %}
+                <p class="lead">Analyzing JWT token...</p>
+            {% endif %}
+            
+            <div class="spinner"></div>
+            
+            <p class="text-muted mt-4">This may take a moment. Please wait...</p>
+            
+            <div class="progress mt-4">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-outline-secondary">Cancel and Return to Home</a>
+        </div>
+    </div>
+</body>
+</html>
