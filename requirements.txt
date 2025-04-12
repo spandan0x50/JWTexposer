@@ -1,5 +1,8 @@
 Flask
 requests
 PyJWT
+flask-httpauth
+celery
+redis
+markupsafe
 gunicorn
-Flask-HTTPAuth

@@ -9,3 +9,15 @@ JWTexposer is an automated tool designed to extract and analyze JWTs (JSON Web T
 - **JWT Decoding**: Decodes JWTs and displays useful fields like email, username, password, and more.
 - **Concurrency**: Uses threading to speed up the process of checking URLs and extracting JWTs.
 - **Basic Authentication**: Simple authentication mechanism to protect the tool from unauthorized access.
+
+### Usage
+
+1. Clone the repo
+   ```
+   git clone https://github.com/spandan0x50/JWTexposer && cd JWTexposer
+    ```
+2. Install the required packages
+   ```
+   docker-compose up --build
+   ```
+3. Access the web interface at `http://localhost:5001`
